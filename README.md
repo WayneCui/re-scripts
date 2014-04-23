@@ -1,4 +1,4 @@
 red-scripts
 ===========
 
-My playground for Red related things.
+My playground for Rebol and Red related things.
