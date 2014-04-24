@@ -91,7 +91,10 @@ tic-tac-toe: context [
 	]
 
 	print-board: function[ board [block!]][
-		print head insert at head insert at board 7 lf 4 lf
+		board: copy board
+		insert at board 7 lf
+		insert at board 4 lf 
+		print board
 	]
 
 	;MAIN PROGRAM
@@ -133,7 +136,7 @@ tic-tac-toe: context [
 				board/(move): symbols/computer
 				player: true
 			]
-			print-board copy board
+			print-board board
 			test-over board
 		]
 		if(first input "Try again? [Y/N]: ") = #"Y" [start]
