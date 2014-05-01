@@ -12,9 +12,16 @@ game: context [
 	content: append/dup copy [] "  " 19
 	content/5: content/10: content/15: quote pipe
 	score: 0
+	hori: charset {HhLlAaDd}
+	vert: charset {JjKkWwSs}
 
-	generate: function [ values [block!] return: [block!]][
-		replace replace copy values none 2 none 4
+	generate: function [ values [block!] direction [char!] return: [block!]][
+		;replace replace copy values none 2 none 4
+		case [
+			find game/hori direction [ replace copy values none 2]
+			find game/vert direction [ replace copy values none 4]
+			true [replace copy values none 2]
+		]
 	]
 	
 	fill-content: function [ values [block!] return: [block!]][
@@ -171,28 +178,28 @@ game: context [
 	
 	start: does [
 		values: append/dup copy [] none 16
-		values: generate values
+		values: generate values null
 		print ["Score: " game/score]
 		print fill-content values
 		command: none 
 		until[
-			chars: charset {HhLlKkJjAaDdWwSsQq}
+			directions: charset {HhLlKkJjAaDdWwSsQq}
 			until [
 				command: ask "[H] left, [L] right, [K] up, [J] down or [Q]uit?"
-				all [ not none? first command find chars first command]
+				all [ not none? first command find directions first command]
 			]
 			;probe values
 			privious: copy values
 			values: move first command values
 			unless equal? privious values [
-				values: generate values
+				values: generate values first command
 			]
 			;probe values
 			print ["Score: " game/score]
 			print fill-content values
 			any [ win? values lose? values]
 		]
-		if find [#"y" #"Y"] first ask "Play again?" [ start ] 
+		if find [#"y" #"Y"] first ask "Play again? [Y/N]" [ start ] 
 	]
 ]
 
