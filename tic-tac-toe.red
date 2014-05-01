@@ -108,7 +108,7 @@ tic-tac-toe: context [
 		player: false
 
 		until [
-			letter: input "Do you want to be [X] or [O] or just [Q]uit?"
+			letter: ask "Do you want to be [X] or [O] or just [Q]uit?"
 			switch/default first letter [
 				#"x" #"X" [ symbols: [ player 'X computer 'O ] true ]
 				#"o" #"O" [ symbols: [ player 'O computer 'X ] true ]
@@ -124,7 +124,7 @@ tic-tac-toe: context [
 				print "It's your turn!"
 				;player's move
 				until [
-					position: load input "Please enter [x y]:"
+					position: load ask "Please enter [x y]:"
 					validate-input position
 				]
 				board/((position/1 - 1) * 3 + position/2): symbols/player
@@ -139,7 +139,7 @@ tic-tac-toe: context [
 			print-board board
 			test-over board
 		]
-		if(first input "Try again? [Y/N]: ") = #"Y" [start]
+		if(first ask "Try again? [Y/N]: ") = #"Y" [start]
 	]
 ]
 
