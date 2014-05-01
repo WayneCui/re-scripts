@@ -1,4 +1,11 @@
-Red []
+Red [
+	Title: {2048}
+	File: %2048.red
+	Author: {WayneTsui}
+	Description: {
+		Inspired by https://github.com/mydzor/bash2048
+	}
+]
 game: context [
 	pipe: '|
 	bar: append/dup copy [] quote '- 19
