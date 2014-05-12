@@ -15,13 +15,15 @@ game: context [
 	hori: charset {HhLlAaDd}
 	vert: charset {JjKkWwSs}
 
-	generate: function [ values [block!] direction [char!] return: [block!]][
-		;replace replace copy values none 2 none 4
-		case [
-			find game/hori direction [ replace copy values none 2]
-			find game/vert direction [ replace copy values none 4]
-			true [replace copy values none 2]
+	generate: function [ values [block!] return: [block!]][
+		position: first random parse values [
+			collect [
+				any [
+					ahead none! s: keep (index? s) skip | skip
+				]
+			]
 		]
+		head replace at values position none first random copy [2 4]
 	]
 	
 	fill-content: function [ values [block!] return: [block!]][
@@ -178,7 +180,7 @@ game: context [
 	
 	start: does [
 		values: append/dup copy [] none 16
-		values: generate values null
+		values: generate values
 		print ["Score: " game/score]
 		print fill-content values
 		command: none 
@@ -192,7 +194,7 @@ game: context [
 			privious: copy values
 			values: move first command values
 			unless equal? privious values [
-				values: generate values first command
+				values: generate values
 			]
 			;probe values
 			print ["Score: " game/score]
