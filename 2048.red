@@ -12,8 +12,7 @@ game: context [
 	content: append/dup copy [] "  " 19
 	content/5: content/10: content/15: quote pipe
 	score: 0
-	hori: charset {HhLlAaDd}
-	vert: charset {JjKkWwSs}
+	directions: charset {HhLlKkJjAaDdWwSsQq}
 
 	generate: function [ values [block!] return: [block!]][
 		position: first random parse values [
@@ -185,14 +184,14 @@ game: context [
 		print fill-content values
 		command: none 
 		until[
-			directions: charset {HhLlKkJjAaDdWwSsQq}
 			until [
 				command: ask "[H] left, [L] right, [K] up, [J] down or [Q]uit?"
-				all [ not none? first command find directions first command]
+				all [ not none? first command find game/directions first command]
 			]
 			;probe values
 			privious: copy values
-			values: move first command values
+			command: first command
+			values: move command values
 			unless equal? privious values [
 				values: generate values
 			]
