@@ -1,26 +1,26 @@
-rebol [
+Rebol [
 	title:		"A SBN Language Compiler"
 	date:		7-May-2017
 	file:		%sbn.reb
 	author: 	"Wayne Cui"
-	version:	0.0.1
+	version:	0.0.2
 	info:		"inspired by https://github.com/kosamari/sbn"
 ]
 
-lexer: function [code][tokens token-blk][
-	tokens: parse code none
+lexer: function [code][    
+	tokens: split code charset [" ^/"]
 	token-blk: copy []
-	map-each token tokens [
-		either error? result: try [ to-integer token ] [
-			repend/only token-blk ['type 'word 'value to-lit-word token]
+	foreach token tokens [
+		either error? result: try [ to integer! token ] [
+			repend/only token-blk ['type 'word 'value to lit-word! token]
 		][
-			repend/only token-blk ['type 'number 'value to-integer token]
+			repend/only token-blk ['type 'number 'value to integer! token]
 		]
 	]
 	token-blk
 ]
 
-parser: function [tokens][][
+parser: function [tokens][
 	AST: [type "Drawing" body []]
 
 	while [(length? tokens) > 0] [
@@ -34,6 +34,7 @@ parser: function [tokens][][
 						'arguments []
 					]
 					argument: take tokens
+					;probe argument/type
 					either argument/type = 'number [
 						repend/only expression/arguments ['type 'NumberLiteral 'value argument/value]
 						repend/only AST/body expression
@@ -64,7 +65,7 @@ parser: function [tokens][][
 					]
 
 					arguments: copy []
-					for i 1 4 1 [
+					loop 4 [
 						argument: take tokens
 						either argument/type = 'number [
 							repend/only arguments ['type 'NumberLiteral 'value argument/value]
@@ -73,7 +74,7 @@ parser: function [tokens][][
 							throw "Line command must be followed by a number."
 						]
 					]
-					probe expression
+					;probe expression
 					repend/only AST/body expression
 				]
 			]
@@ -83,7 +84,7 @@ parser: function [tokens][][
 	AST
 ]
 
-transformer: func[ ast /local svg-ast pen-color][
+transformer: function[ ast ][
 	svg-ast: [
 		'tag 'svg
 		'attr [
@@ -136,28 +137,32 @@ transformer: func[ ast /local svg-ast pen-color][
 	svg-ast
 ]
 
-generator: func[svg-ast][
-	probe svg-ast
+generator: function[svg-ast][
 	svg-attr: create-attr-string svg-ast/attr
-	elements: ajoin map-each node svg-ast/body [
-		rejoin ["<" node/tag space create-attr-string node/attr {></} node/tag {>} lf]
+	;probe svg-attr
+	elements: copy []
+	foreach node svg-ast/body [
+		append elements rejoin ["<" node/tag space create-attr-string node/attr {></} node/tag {>} lf]
 	]
-
 	return rejoin [{<svg } svg-attr {>^/} elements {^/</svg>}]
 ]
 
-create-attr-string: func[attr][
-	ajoin map-each [key value] attr [
-		rejoin [key {="} value {"} space ]
+create-attr-string: function[attr][
+	result: copy []
+	foreach [key value] attr [
+		append result rejoin [key {="} value {"} space ]
 	]
+	return result
 ]
 
-compile: func[code][
+compile: function[code][
 	write %simple.svg generator transformer parser lexer code
 ]
 
-compile {Paper 100
-Pen 0
+code: {Paper 100 Pen 0
 Line 50 15 85 80
 Line 85 80 15 80
-Line 15 80 50 15}
+Line 15 80 50 15} 
+
+;probe generator transformer parser lexer code
+compile code
