@@ -33,7 +33,6 @@ prepare: function [files][
 source-obj: make object! [
     file-name: NONE
     buf: copy []
-    postion: 0
     cached-line: NONE
     exhausted: false
     has-next: function [ ][
@@ -41,13 +40,11 @@ source-obj: make object! [
             false
         ] [
             either empty? self/buf [
-                print "re-read"
-                err: error? try [ self/buf: read/lines/seek/part (to-file file-name) postion (500 * 3)]
-                if err [
+                self/buf: read/lines (to-file file-name)
+                if tail? self/buf [
                     self/exhausted: true
                     return false
                 ]
-                return not (empty? self/buf)
             ] [
                 true
             ]
@@ -55,21 +52,20 @@ source-obj: make object! [
     ]
 
     get-next: function [ ][
-        if empty? self/buf [
-            self/buf: read/lines/seek/part (to-file file-name) self/postion (500 * 3)
-            self/postion: self/postion + 500
-        ]
-
-        cached-line: first self/buf
-        ; probe cached-line
-        self/buf: next self/buf
-        either empty? trim cached-line [
-            trim cached-line
-        ][
+        either self/exhausted [
+            none
+        ] [
+            if empty? self/buf [
+                self/buf: read/lines (to-file file-name)
+                if tail? self/buf [
+                    self/exhausted: true
+                    return false
+                ]
+            ] 
+            cached-line: first self/buf
+            self/buf: next self/buf
             to-integer trim cached-line
         ]
-
-        ; to-integer trim cached-line
     ]
 ]
 
@@ -107,9 +103,10 @@ merge-sort: function [ bins ][
         probe-bins bins
         current: first first bins 
         either current/has-next [
+            ; probe "current has next value"
             new-bin: reduce [ current current/get-next ]
             index: binary-search bins new-bin
-            probe index
+            ; probe index
 
             either (index = 1) [
                 output new-bin
@@ -118,18 +115,19 @@ merge-sort: function [ bins ][
                     index: absolute index
                     insert/only at bins index new-bin
 
-                    ; output
                     min-bin: first bins
-                    probe min-bin/2
+                    ; probe min-bin/2
                     remove bins
                     output min-bin
                 ]
             ]
         ] [
+            ; probe "current has not next value"
             min-bin: first bins
             remove bins
             output min-bin
 
+            probe-bins: bins
             if empty? bins [
                 break
             ]
@@ -156,7 +154,7 @@ comment [
     probe s-obj/get-next
 ]
 
-files: generate-files 2 5 10
+files: generate-files 100 10000 50000
 bins: prepare files
 probe-bins bins
 merge-sort bins
