@@ -42,7 +42,7 @@ swap: function [list [block!] a [integer!] b[integer!]][
 
 probe quick-sort [] ;[]
 probe quick-sort [1] ;[1]
-probe quick-sort [3 2 1] ;[1 2]
+probe quick-sort [2 1] ;[1 2]
 probe quick-sort [3 5 6 7 8] ;[3 5 6 7 8]
 probe quick-sort [2 2 2 2] ;[2 2 2 2]
 probe quick-sort [4 3 2 1] ;[1 2 3 4]
