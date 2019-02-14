@@ -34,8 +34,8 @@ array: function [
 ; probe array 5
 ; probe array/initial 5 10
 
-range: function [ max-val [integer!] /from from-value [integer!]][
-    collect [
+range: function [ max-val [integer!] /from from-value [integer!] /reverse][
+    blk: collect [
         either from [
             repeat i (max-val - from-value + 1) [
                 keep (from-value + i - 1)
@@ -46,7 +46,10 @@ range: function [ max-val [integer!] /from from-value [integer!]][
             ]
         ]
     ]
+
+    either reverse [ system/words/reverse blk ] [blk]
 ]
 
-range 7 
+; range 7 
+range/reverse 7
 
