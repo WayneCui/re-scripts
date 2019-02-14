@@ -51,5 +51,22 @@ range: function [ max-val [integer!] /from from-value [integer!] /reverse][
 ]
 
 ; range 7 
-range/reverse 7
+; range/reverse 7
 
+assert: function [ conditions [block!]][
+    unless do conditions [
+        throw rejoin [ to-string conditions " is not meeted!" ] 
+    ]
+
+    print "valid"
+]
+
+; probe assert [ 1 > 0 ]
+; probe assert [ 1 > 2 ]
+
+log: function ['word[word!] value [any-type!]][
+    probe rejoin [word ": " value]
+]
+
+; a: 1
+; log a a
