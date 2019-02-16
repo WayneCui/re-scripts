@@ -52,7 +52,6 @@ move-by-gs: function [
 
     if not (suffix/(gs-len + 1) = -1) [ return bc-index - suffix/(gs-len + 1) + 2 ]
     
-    ;r is a index
     ;why bc-index + 2 ?
     ;because bc-index + 1 will be the whole suffix string
     foreach len range/reverse ( m - bc-index - 2) [
@@ -60,11 +59,6 @@ move-by-gs: function [
             return m - len
         ]
     ]
-    ; foreach r range/from m bc-index + 2 [
-    ;     if prefix/(m - r + 1) = true [
-    ;         return r - 1 ;m - (m - r + 1)
-    ;     ]
-    ; ]
 
     return m
 ]
