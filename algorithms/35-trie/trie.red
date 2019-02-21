@@ -7,7 +7,7 @@ do %../utils.red
 
 trie-node: make object! [
     data: none
-    children: array/initial 27 none
+    children: array/initial 128 none ;only support ascii
     is-ending-char: false
 ]
 
@@ -21,7 +21,7 @@ trie-tree-template: make object! [
     insert: function [ text [string!]][
         node: self/root
         foreach char text [
-            index: to-integer char - to-integer #"a" + 1
+            index: (to-integer char) + 1
             if not node/children/(index) [
                 node/children/(index): new-node to-string char
             ]
@@ -35,7 +35,7 @@ trie-tree-template: make object! [
     search: function [ pattern [string!]][
         node: self/root
         foreach char pattern [
-            index: to-integer char - to-integer #"a" + 1
+            index: (to-integer char) + 1
             if not node/children/(index) [
                 return false
             ]
@@ -47,7 +47,7 @@ trie-tree-template: make object! [
     ]
 ]
 
-strs: ["how"  "hi"  "her"  "hello"  "so"  "see"]
+strs: ["how"  "hi"  "her"  "hello"  "so"  "see" "iPhone6 plus"  "K8s" "ChromeOS" "Docker"]
 trie-tree: make trie-tree-template []
 foreach str strs [
     trie-tree/insert str
@@ -57,5 +57,11 @@ foreach str strs [
     print trie-tree/search str
 ]
 
-print trie-tree/search "he"
-print trie-tree/search "seen"
+to-find: ["he" "seen" "Java" "docker"]
+
+foreach s to-find [
+    if not trie-tree/search s [
+        print s
+    ]
+]
+
