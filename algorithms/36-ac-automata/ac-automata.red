@@ -8,7 +8,7 @@ do %../utils.red
 
 ac-node: make object! [
     data: none
-    children: array/initial 27 none
+    children: array/initial 128 none
     is-ending-char: false
     fail: none
     length: 0
@@ -19,7 +19,7 @@ new-ac-node: function [ v ][
 ]
 
 alpha-index?: function [ char [char! string!]][
-    (to-integer to-char char) - (to-integer #"a") + 1
+    (to-integer to-char char) + 1
 ]
 
 new-ac-trie: function [][
@@ -29,7 +29,7 @@ new-ac-trie: function [][
         insert: function [ text [string!]][
             node: self/root
             foreach char text [
-                index: either char = space [ 27 ][ alpha-index? char ]
+                index: alpha-index? char
                 if not node/children/(index) [
                     node/children/(index): new-ac-node to-string char
                 ]
@@ -142,7 +142,7 @@ foreach pattern patterns [
 
 automata-2/build-failure-pointer
 
-result: automata-2/match "fuck you what is that shit tmd"
+result: automata-2/match a: "fuck you what is that shit tmd"
 probe result = collect [ 
     parse a [ 
         some [
