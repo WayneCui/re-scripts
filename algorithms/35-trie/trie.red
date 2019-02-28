@@ -53,15 +53,21 @@ foreach str strs [
     trie-tree/insert str
 ]
 
-foreach str strs [
-    print trie-tree/search str
+blk: collect [
+    foreach str strs [
+        keep trie-tree/search str
+    ]
 ]
+probe (all blk) = true
+
 
 to-find: ["he" "seen" "Java" "docker"]
 
-foreach s to-find [
-    if not trie-tree/search s [
-        print s
+blk: collect [
+    foreach s to-find [
+        keep trie-tree/search s 
     ]
 ]
+
+probe (any blk) = none
 
