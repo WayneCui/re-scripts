@@ -41,20 +41,6 @@ new-ac-trie: function [][
             node/length: length? text
         ]
 
-        search: function [ pattern [string!]][
-            node: self/root
-            foreach char pattern [
-                index: to-integer char - to-integer #"a" + 1
-                if not node/children/(index) [
-                    return false
-                ]
-
-                node: node/children/(index)
-            ]
-
-            node/is-ending-char
-        ]
-
         build-failure-pointer: function [ ][
             root: self/root
             queue: copy []
