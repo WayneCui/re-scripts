@@ -132,11 +132,11 @@ result: automata-2/match a: "fuck you what is that shit tmd"
 probe result = collect [ 
     parse a [ 
         some [
-            t: "fuck"  (keep (index? t) keep 4) | 
-            t: "shit" (keep (index? t) keep 4) | 
-            t: "tmd"  (keep (index? t) keep 3) | 
+            change t: "fuck" "****" (keep (index? t) keep 4) | 
+            change t: "shit" "****" (keep (index? t) keep 4) | 
+            change t: "tmd" "***" (keep (index? t) keep 3) | 
             skip]
         ]
 ]
 
-;collect [parse a [ some [t: "fuck"  (print (index? t)) | t: "shit" (print (index? t)) | t: "tmd"  (print (index? t) ) | skip]]]
+probe a
