@@ -9,7 +9,7 @@ length-of-LIS: function [ nums [block!]][
     n: length? nums
 
     if n = 0 [ return 0 ]
-    dp: array/initial n 0
+    dp: array/initial n 0  ; dp/(i) 表示以 nums/(i) 结尾的序列的个数
     dp/1: 1
     maxans: 1
     foreach i range/from n 2 [
