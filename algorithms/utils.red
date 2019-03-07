@@ -70,3 +70,26 @@ log: function ['word[word!] value [any-type!]][
 
 ; a: 1
 ; log a a
+
+
+min?: function [blk [block!]][
+    if empty? blk [ return none ]
+    if (length? blk) = 1 [ return first blk ]
+    tmp: first blk
+    foreach item blk [
+        tmp: min item tmp
+    ]
+
+    tmp
+]
+
+max?: function [blk [block!]][
+    if empty? blk [ return none ]
+    if (length? blk) = 1 [ return first blk ]
+    tmp: first blk
+    foreach item blk [
+        tmp: max item tmp
+    ]
+
+    tmp
+]
