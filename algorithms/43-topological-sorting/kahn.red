@@ -1,5 +1,5 @@
 Red [
-    Title: "Topological sorting"
+    Title: "Topological sorting by kahn"
 ]
 
 do %../utils.red
