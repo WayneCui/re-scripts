@@ -110,19 +110,23 @@ priority-queue: make object! [
     ]
 ]
 
-a-pqueue: make priority-queue []
-a-pqueue/init 10
-a-pqueue/add 'd
-a-pqueue/add 'a
-a-pqueue/add 'e
-a-pqueue/add 'c
-a-pqueue/add 'b
-a-pqueue/add 'f
-probe a-pqueue/queue
+test: function [][
+    a-pqueue: make priority-queue []
+    a-pqueue/init 10
+    a-pqueue/add 'd
+    a-pqueue/add 'a
+    a-pqueue/add 'e
+    a-pqueue/add 'c
+    a-pqueue/add 'b
+    a-pqueue/add 'f
+    probe a-pqueue/queue
 
-a-pqueue/update 'a 'x
-probe a-pqueue/queue
+    a-pqueue/update 'a 'x
+    probe a-pqueue/queue
 
-a-pqueue/poll
-a-pqueue/poll
-probe a-pqueue/queue
+    a-pqueue/poll
+    a-pqueue/poll
+    probe a-pqueue/queue
+]
+
+; test
