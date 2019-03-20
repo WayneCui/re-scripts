@@ -63,6 +63,11 @@ priority-queue: make object! [
         zero? self/count
     ]
 
+    clear: function [arg][
+        system/words/clear self/queue
+        self/count: 0
+    ]
+
     sift-up: function [k [integer!] x ][
         while [ k > 1] [
             parent: k >>> 1
