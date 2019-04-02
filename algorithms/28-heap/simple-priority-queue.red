@@ -2,7 +2,7 @@ Red [
     Title: "simple-priority-queue.red"
 ]
 
-do %utils.red
+do %../utils.red
 
 priority-queue: make object! [
     queue: none

@@ -2,7 +2,7 @@ Red [
     Title: "Dijkstra algorithm with priority queue"
 ]
 
-do %../simple-priority-queue.red
+do %../28-heap/simple-priority-queue.red
 
 max-int: 2147483647  ;(power 2 31) - 1
 
